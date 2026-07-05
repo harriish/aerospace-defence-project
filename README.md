@@ -1,6 +1,6 @@
 # aerospace-net-bench 🚀
 
-An engineering benchmark suite developed to evaluate transport layer protocols under simulated, highly hostile tactical aerospace networks. This suite directly validates communication reliability, throughput, and latency constraints for autonomous vehicle systems (Project Kreuger 100).
+An engineering benchmark suite developed to evaluate transport layer protocols under simulated, highly hostile tactical aerospace networks. This suite directly validates communication reliability, throughput, and latency constraints for autonomous vehicle systems .
 
 ## 🔬 Experiment Overview
 The objective of Experiment-4 is to stress-test and evaluate three competing encrypted network architectures under realistic, degraded wireless environments:
