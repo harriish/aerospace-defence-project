@@ -2,7 +2,7 @@
 
 An engineering benchmark suite developed to evaluate transport layer protocols under simulated, highly hostile tactical aerospace networks. This suite directly validates communication reliability, throughput, and latency constraints for autonomous vehicle systems (Project Kreuger 100).
 
-## 🔬 Experiment-4 Overview
+## 🔬 Experiment Overview
 The objective of Experiment-4 is to stress-test and evaluate three competing encrypted network architectures under realistic, degraded wireless environments:
 1. **Encrypted TCP** (TLS 1.3 over standard TCP)
 2. **Encrypted UDP** (Raw stateless UDP wrapped in AES-256-GCM encryption)
