@@ -77,14 +77,20 @@ While **AES-256-GCM over UDP** registers a faster absolute execution time (~399 
 ```bash
 sudo tc qdisc add dev lo root netem delay 150ms loss 5%
 ```
+### 2. Run the commands for the Benchmark Suite 
 
-### 2. Execute Benchmark Suite
-To run the standard automated evaluation loop across all three protocols:
+In Terminal 1, run the server 
+
 ```bash
-for proto in tcp udp quic; do 
-  cargo run --bin client -- --protocol \$proto --payload-size 4096; 
-done
+ cargo run --bin server
+````
+
+In Terminal 2, run the client
+
 ```
+for proto in tcp udp quic; do echo "🔄 Running $proto 100 times..."; sum_conn=0; sum_rtt=0; for i in {1..100}; do out=$(cargo run --quiet --bin client -- --protocol $proto --payload-size 4096); if [ "$proto" = "quic" ]; then c_line=$(echo "$out" | grep "Handshake/Connection Time:" | tail -n 1); r_line=$(echo "$out" | grep "Data Round-Trip Time:" | tail -n 1); else c_line=$(echo "$out" | grep "Handshake/Connection Time:"); r_line=$(echo "$out" | grep "Data Round-Trip Time:"); fi; parse_ms() { num=$(echo "$1" | sed -E 's/[^0-9\.]//g'); if [[ "$1" == *"µs"* || "$1" == *"us"* ]]; then echo "scale=6; $num / 1000" | bc; elif [[ "$1" == *"s"* && "$1" != *"ms"* && "$1" != *"µs"* ]]; then echo "scale=6; $num * 1000" | bc; else echo "$num"; fi; }; c_ms=$(parse_ms "$c_line"); r_ms=$(parse_ms "$r_line"); sum_conn=$(echo "scale=6; $sum_conn + $c_ms" | bc); sum_rtt=$(echo "scale=6; $sum_rtt + $r_ms" | bc); done; echo -e "📊 FINAL AVERAGES FOR ${proto^^}:\n   Avg Handshake/Connection: $(echo "scale=3; $sum_conn / 100" | bc) ms\n   Avg Data Round-Trip Time:  $(echo "scale=3; $sum_rtt / 100" | bc) ms\n"; done
+```
+
 
 ### 3. Teardown Emulation Layer
 Remember to clear your local loopback constraints after the benchmarking is completed:
